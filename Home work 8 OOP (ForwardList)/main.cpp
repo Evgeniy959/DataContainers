@@ -1,4 +1,19 @@
-﻿#include<iostream>
+﻿/*В класс ForwardList добавить методы :
+1. void erase(int index);		//Удаляет значение по заданному индексу
+2. Написать деструктор таким образом, чтобы он очищал список
+(удалял из него све элементы) перед удалением;				DONE
+3. Оптимировать методы добавления элементов и проходы по списку;
+4. CopyMethods		DONE
+5. MoveMethods
+6. Перегрузить оператор + таким образом, чтобы он выполнял конкатенацию списков;  TODO
+7. (Hardcore - чик)Обеспечить создание списка следующим образом :
+ForwardList list = { 3, 5, 8, 13, 21 };
+8. (Hardcore)Обеспечить вывод списка на экран следующим образом :  TODO
+for (int i : list)
+cout << i << tab;
+cout << endl;*/
+
+#include<iostream>
 using namespace std;
 
 #define tab "\t"
@@ -21,20 +36,31 @@ public:
 		count--;
 		cout << "EDestructor:\t" << this << endl;
 	}
+	friend class Iterator;
 	friend class ForwardList;
+
 };
-int Element::count = 0;
+int Element::count = 0; //Инициализация статической переменной 
 
 class ForwardList
 {
 	Element* Head;	//Адрес начального элемента
 	unsigned int size;	//Содержит размер списка
 public:
+	
 	ForwardList()
 	{
 		Head = nullptr;	//Если Голова указывает на 0, то список пуст
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
+	}
+	ForwardList(initializer_list<int> initl) :ForwardList()//Делегирование конструктора по умолчанию
+	{
+		cout << typeid(initl.begin()).name() << endl;
+		for (int const* it = initl.begin(); it != initl.end(); it++)
+		{
+			push_back(*it);
+		}
 	}
 	ForwardList(const ForwardList& other)
 	{
@@ -47,6 +73,13 @@ public:
 			Temp = Temp->pNext;	//Переход на следующий элемент
 		}
 		cout << "CopyConstructor:\t" << this << endl;
+	}
+	ForwardList(ForwardList&& other)noexcept
+	{
+		this->size = other.size;
+		this->Head = other.Head;
+		other.Head = nullptr;
+		cout << "MoveConstructor:\t" << this << endl;
 	}
 	~ForwardList()
 	{
@@ -66,6 +99,16 @@ public:
 			Temp = Temp->pNext;
 		}
 		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)noexcept
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		this->size = other.size;
+		this->Head = other.Head;
+		other.Head = nullptr;
+		cout << "MoveAssignment:\t\t" << this << endl;
 		return *this;
 	}
 
@@ -89,13 +132,14 @@ public:
 			return;
 		}
 		//1) Создаем новый элемент:
-		Element* New = new Element(Data);
+		//Element* New = new Element(Data);
 		//2) Доходим до конца списка:
 		Element* Temp = Head;
 		while (Temp->pNext != nullptr)
 			Temp = Temp->pNext;
 		//3) Прикрепляем новый элемент к последнему:
-		Temp->pNext = New;
+		//Temp->pNext = New;
+		Temp->pNext = new Element(Data);
 		size++;
 	}
 
@@ -108,23 +152,26 @@ public:
 		}
 		if (Index > size)return;
 		//1) Создаем новый элемент:
-		Element* New = new Element(Data);
+		//Element* New = new Element(Data);
 		//2) Доходим до нужного элемента:
 		Element* Temp = Head;
-		for (int i = 0; i < Index - 1; i++)
+		/*for (int i = 0; i < Index - 1; i++)
 		{
 			Temp = Temp->pNext;
-		}
+		}*/
+		for (int i = 0; i < Index - 1; i++, Temp = Temp->pNext)
+			if (Temp->pNext == nullptr)break;
 		//3) Вставляем новый элемент на нужную позицию:
-		New->pNext = Temp->pNext;
-		Temp->pNext = New;
+		/*New->pNext = Temp->pNext;
+		Temp->pNext = New;*/
+		Temp->pNext = new Element(Data, Temp->pNext);
 		size++;
 	}
 
 	//				Erasing elements:
 	void pop_front()
 	{
-		//1) Запоминаем адрес удаляемого элемента:
+		//1) Запоминаем адрес удаляемого элемента: 
 		Element* to_del = Head;
 		//2) Исключаем удаляемый элемент из списка:
 		Head = Head->pNext;
@@ -186,16 +233,16 @@ public:
 void main()
 {
 	setlocale(LC_ALL, "");
-	int n;	//Размер списка
+	/*int n;	//Размер списка
 	cout << "Введите количество элементов списка: "; cin >> n;
 	ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_back(rand() % 100);
-	}
-	list = list;
+	}*/
+	/*list = list;
 	list.print();
-	/*list.push_back(123);
+	list.push_back(123);
 	list.print();
 	list.pop_front();
 	list.print();
@@ -204,16 +251,26 @@ void main()
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	cout << "Введите значение добавляемого элемента: "; cin >> value;
 	list.insert(index, value);
-	list.print();*/
-
-	ForwardList list2 = list;	//CopyConstructor
+	list.print();
+	cout << "Введите индекс удаляемого элемента: "; cin >> index;
+	list.erase(index);
+	list.print();
+	/*ForwardList list2 = list;	//CopyConstructor
 	list2.print();
-
 	ForwardList list3;
 	list3 = list2;		//CopyAssignment
-	list3.print();
+	list3.print();*/
+	/*ForwardList list2;
+	for (int i = 0; i < n; i++)
+	{
+		list2.push_back(rand() % 100);
+	}
+	list2.print();*/
 
-	int a = 2;
-	int b = 3;
-	a = b;
+
+	/*list3 = list2 + list;		//MoveAssignment
+	list3.print();*/
+
+	ForwardList list = { 3,5,8,13,21 };
+	list.print();
 }

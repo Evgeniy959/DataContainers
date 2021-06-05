@@ -56,11 +56,15 @@ class ForwardList
 	Element* Head;	//Адрес начального элемента
 	unsigned int size;	//Содержит размер списка
 public:
-	unsigned int get_size() const
+	/*unsigned int get_size() const
 	{
 		return size;
 	}
 	Element* get_Head() const
+	{
+		return Head;
+	}*/
+	Iterator getHead()
 	{
 		return Head;
 	}
@@ -289,11 +293,11 @@ void main()
 	setlocale(LC_ALL, "");
 	int n;	//Размер списка
 	cout << "Введите количество элементов списка: "; cin >> n;
-	ForwardList list;
+	/*ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_back(rand() % 100);
-	}
+	}*/
 	/*list = list;
 	list.print();
 	list.push_back(123);
