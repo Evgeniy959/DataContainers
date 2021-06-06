@@ -17,6 +17,11 @@ cout << endl;*/
 using namespace std;
 
 #define tab "\t"
+#define delimiter "\n---------------------------------------------------\n"
+
+class ForwardList;
+ForwardList operator+(const ForwardList& left, const ForwardList& right);
+
 
 class Element
 {
@@ -38,6 +43,7 @@ public:
 	}
 	friend class Iterator;
 	friend class ForwardList;
+	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 
 };
 int Element::count = 0; //Инициализация статической переменной 
@@ -47,6 +53,10 @@ class ForwardList
 	Element* Head;	//Адрес начального элемента
 	unsigned int size;	//Содержит размер списка
 public:
+	Element* getHead()const
+	{
+		return Head;
+	}
 	
 	ForwardList()
 	{
@@ -74,7 +84,7 @@ public:
 		}
 		cout << "CopyConstructor:\t" << this << endl;
 	}
-	ForwardList(ForwardList&& other)noexcept
+	ForwardList(ForwardList&& other)//noexcept
 	{
 		this->size = other.size;
 		this->Head = other.Head;
@@ -101,7 +111,7 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-	ForwardList& operator=(ForwardList&& other)noexcept
+	ForwardList& operator=(ForwardList&& other)//noexcept
 	{
 		if (this == &other)return *this;
 		while (Head)pop_front();
@@ -229,18 +239,27 @@ public:
 		cout << "Общее количество элементов:  " << Element::count << endl;
 	}
 };
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList cat = left;	//CopyConstructor
+	for (Element* Temp = right.getHead(); Temp; Temp = Temp->pNext)
+		cat.push_back(Temp->Data);
+	/*for (Iterator it = right.begin(); it != right.end(); it++)
+		cat.push_back(*it);*/
+	return cat;
+}
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	/*int n;	//Размер списка
+	int n;	//Размер списка
 	cout << "Введите количество элементов списка: "; cin >> n;
 	ForwardList list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_back(rand() % 100);
-	}*/
-	/*list = list;
+	}
+	list = list;
 	list.print();
 	list.push_back(123);
 	list.print();
@@ -255,22 +274,26 @@ void main()
 	cout << "Введите индекс удаляемого элемента: "; cin >> index;
 	list.erase(index);
 	list.print();
-	/*ForwardList list2 = list;	//CopyConstructor
+	ForwardList list2 = list;	//CopyConstructor
 	list2.print();
 	ForwardList list3;
 	list3 = list2;		//CopyAssignment
-	list3.print();*/
-	/*ForwardList list2;
+	list3.print();
+	ForwardList list1;
 	for (int i = 0; i < n; i++)
 	{
-		list2.push_back(rand() % 100);
+		list1.push_back(rand() % 100);
 	}
-	list2.print();*/
+	list1.print();
+
+	cout << delimiter << endl;
+	list3 = list1 + list;                    //MoveAssignment
+	//ForwardList list4 = list1 + list;		//MoveConstructor
+	cout << delimiter << endl;
+	list3.print();
+	//list4.print();
 
 
-	/*list3 = list2 + list;		//MoveAssignment
-	list3.print();*/
-
-	ForwardList list = { 3,5,8,13,21 };
-	list.print();
+	/*ForwardList list = { 3,5,8,13,21 };
+	list.print();*/
 }
