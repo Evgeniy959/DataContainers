@@ -46,7 +46,58 @@ public:
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 
 };
-int Element::count = 0; //Инициализация статической переменной 
+int Element::count = 0; //Инициализация статической переменной
+
+class Iterator
+{
+	Element* Temp;
+	//Этот класс просто обварачивает указатель на Element, 
+	//что позволяет нам перегружать операции для указателя на Element.
+public:
+	Iterator(Element* Temp = nullptr)
+	{
+		this->Temp = Temp;
+		cout << "ITConstructor:\t" << this << endl;
+	}
+	Iterator(const Iterator& other)
+	{
+		this->Temp = other.Temp;
+		cout << "ICopyConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "ITDestructor:\t" << this << endl;
+	}
+
+	Iterator& operator++()	//Prefix increment
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	Iterator operator++(int)
+	{
+		Iterator old = *this;
+		Temp = Temp->pNext;
+		return old;
+	}
+	bool operator==(const Iterator& other)const
+	{
+		return this->Temp == other.Temp;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+		//return !(*this == other);
+	}
+	const int& operator*()const
+	{
+		return Temp->Data;
+	}
+	int& operator*()
+	{
+		return Temp->Data;
+	}
+};
 
 class ForwardList
 {
@@ -57,6 +108,22 @@ public:
 	{
 		return Head;
 	}
+	const Iterator begin()const
+	{
+		return Head;
+	}
+	Iterator begin()
+	{
+		return Head;
+	}
+	const Iterator end()const
+	{
+		return nullptr;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 	
 	ForwardList()
 	{
@@ -66,7 +133,9 @@ public:
 	}
 	ForwardList(initializer_list<int> initl) :ForwardList()//Делегирование конструктора по умолчанию
 	{
-		cout << typeid(initl.begin()).name() << endl;
+		//begin() - возвращает итератор на начало контейнера
+		//end()   - возвращает итератор на конец контейнера
+		cout << typeid(initl.begin()).name() << endl;                  //typeid определяет тип значения.
 		for (int const* it = initl.begin(); it != initl.end(); it++)
 		{
 			push_back(*it);
@@ -287,13 +356,19 @@ void main()
 	list1.print();
 
 	cout << delimiter << endl;
-	list3 = list1 + list;                    //MoveAssignment
-	//ForwardList list4 = list1 + list;		//MoveConstructor
+	//list3 = list1 + list;                    //MoveAssignment
+	ForwardList list4 = list1 + list;		//MoveConstructor
 	cout << delimiter << endl;
-	list3.print();
-	//list4.print();
+	//list3.print();
+	list4.print();
 
-
-	/*ForwardList list = { 3,5,8,13,21 };
-	list.print();*/
+	ForwardList list5 = { 3,5,8,13,21 };
+	list5.print();
+	
+	ForwardList list6 = { 3,5,8,13,21 };
+	for (int i : list6)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
 }
