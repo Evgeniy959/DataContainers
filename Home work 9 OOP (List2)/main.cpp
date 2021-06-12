@@ -1,5 +1,6 @@
 ﻿#pragma warning(disable:4326)
 #include<iostream>
+#include<string>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -286,12 +287,12 @@ void main()
 	}
 	for (double i : d_list)cout << i << tab; cout << endl;
 	
-	/*List<string> s_list = { "Хорошо", "живет", "на", "свете", "Винни-Пух" };
-	s_list.print();*/
-	/*for (List<string>::Iterator it = s_list.begin(); it != s_list.end(); it++)
+	List<string> s_list = { "Хорошо", "живет", "на", "свете", "Винни-Пух" };
+	s_list.print();
+	for (List<string>::Iterator it = s_list.begin(); it != s_list.end(); it++)
 	{
 		cout << *it << tab;
 	}
-	cout << endl;*/
-	//for (string i : s_list)cout << i << tab; cout << endl;
+	cout << endl;
+	for (string i : s_list)cout << i << tab; cout << endl;
 }
