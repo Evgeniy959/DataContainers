@@ -1,18 +1,4 @@
-﻿/*TODO:
-В двусвязный список добавить методы :
-1. void push_back(int Data);
-2. void pop_front();
-3. void pop_back();
-4. void insert(int index, int data);
-5. void erase(int index);
-6. Деструктор должен очищать список;
-7. Этот проверочный код должен заработать :
-List list = { 3,5,8,13,21 };
-for (int i : list)
-   cout << i << tab;
-cout << endl;*/
-
-#include<iostream>
+﻿#include<iostream>
 using namespace std;
 
 #define tab "\t"
