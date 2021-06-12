@@ -1,17 +1,22 @@
-﻿#include<iostream>
+﻿#pragma warning(disable:4326)
+#include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define tab "\t"
 
+template<typename T>
 class List
 {
 	class Element
 	{
-		int Data;
+		T Data;
 		Element* pNext;
 		Element* pPrev;
 	public:
-		Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr)
+		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr)
 		{
 			this->Data = Data;
 			this->pNext = pNext;
@@ -22,7 +27,7 @@ class List
 		{
 			cout << "EDestructor:\t" << this << endl;
 		}
-		friend class List;
+		friend class List<T>;
 	}*Head, *Tail;	//Сразу же после описания класса объявляем два указателя на объекты этого класса - указатели на начальный и конечный элемент
 	/*Element *Head;
 	Element *Tail;*/
@@ -67,11 +72,11 @@ public:
 			return this->Temp != other.Temp;
 		}
 
-		const int& operator*()const
+		const T& operator*()const
 		{
 			return Temp->Data;
 		}
-		int& operator*()
+		T& operator*()
 		{
 			return Temp->Data;
 		}
@@ -92,10 +97,10 @@ public:
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
-	List(const initializer_list<int>& il) :List()
+	List(const initializer_list<T>& il) :List()
 	{
 		cout << typeid(il.begin()).name() << endl;
-		for (int const* it = il.begin(); it != il.end(); it++)
+		for (T const* it = il.begin(); it != il.end(); it++)
 			push_back(*it);
 	}
 	~List()
@@ -106,7 +111,7 @@ public:
 	}
 
 	//			Adding elements:
-	void push_front(int Data)
+	void push_front(T Data)
 	{
 		if (Head == nullptr && Tail == nullptr)
 		{
@@ -122,7 +127,7 @@ public:
 		size++;
 		
 	}
-	void push_back(int Data)
+	void push_back(T Data)
 	{
 		if (Head == nullptr && Tail == nullptr)
 		{
@@ -137,7 +142,7 @@ public:
 		Tail = Tail->pNext = new Element(Data, nullptr, Tail);
 		size++;
 	}
-	void insert(int Index, int Data)
+	void insert(unsigned int Index, T Data)
 	{
 		if (Index > size)return;
 		if (Index == 0)
@@ -246,7 +251,7 @@ void main()
 	setlocale(LC_ALL, "Russian");
 	//int n; cout << "Введите размер списка: "; cin >> n;
 #ifdef BASE_CHECK
-	List list;
+	List<T> list;
 	for (int i = 0; i < n; i++)
 	{
 		list.push_front(rand() % 100);
@@ -268,10 +273,25 @@ void main()
 	list.print();
 #endif // BASE_CHECK
 
-	List list = { 3, 5, 8, 13, 21 };
+	/*List<int> list = { 3, 5, 8, 13, 21 };
 	list.print();
 	for (int i : list)
 		cout << i << tab;
-	cout << endl;
-
+	cout << endl;*/
+	List<double> d_list = { 2.5, 3.14, 5.2, 8.3 };
+	//d_list.print();
+	for (List<double>::Iterator it = d_list.begin(); it != d_list.end(); it++)
+	{
+		cout << *it << tab;
+	}
+	for (double i : d_list)cout << i << tab; cout << endl;
+	
+	/*List<string> s_list = { "Хорошо", "живет", "на", "свете", "Винни-Пух" };
+	s_list.print();*/
+	/*for (List<string>::Iterator it = s_list.begin(); it != s_list.end(); it++)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;*/
+	//for (string i : s_list)cout << i << tab; cout << endl;
 }
