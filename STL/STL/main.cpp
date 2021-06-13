@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<string>
 #include<array>
 #include<vector>
@@ -7,8 +7,8 @@ using std::cout;
 using std::endl;
 
 #define tab "\t"
-//STL - Standard Template Library (Стандартная шаблонная библиотека).
-//Container - это объект, который организует хранение других объектов в памяти.
+//STL - Standard Template Library (РЎС‚Р°РЅРґР°СЂС‚РЅР°СЏ С€Р°Р±Р»РѕРЅРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР°).
+//Container - СЌС‚Рѕ РѕР±СЉРµРєС‚, РєРѕС‚РѕСЂС‹Р№ РѕСЂРіР°РЅРёР·СѓРµС‚ С…СЂР°РЅРµРЅРёРµ РґСЂСѓРіРёС… РѕР±СЉРµРєС‚РѕРІ РІ РїР°РјСЏС‚Рё.
 //Iterator  - 
 //Algorithms
 
@@ -20,7 +20,7 @@ Container adaptors:	   stack, queue, priority_queue;
 -------------------------------------------------------------------------
 */
 
-template<typename T>void vector_properties(const std::vector<T>& vec);	//Прототип
+template<typename T>void vector_properties(const std::vector<T>& vec);	//РџСЂРѕС‚РѕС‚РёРї
 template<typename T>void vector_print(const std::vector<T>& vec);
 template<typename T>void vector_reverse_print(const std::vector<T>& vec);
 
@@ -31,7 +31,7 @@ void main()
 {
 	setlocale(LC_ALL, "Russian");
 #ifdef ARRAY
-	//array - это линейный контейнер, который хранит объекты в виде статического массива.
+	//array - СЌС‚Рѕ Р»РёРЅРµР№РЅС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ, РєРѕС‚РѕСЂС‹Р№ С…СЂР°РЅРёС‚ РѕР±СЉРµРєС‚С‹ РІ РІРёРґРµ СЃС‚Р°С‚РёС‡РµСЃРєРѕРіРѕ РјР°СЃСЃРёРІР°.
 	const int n = 5;
 	std::array<int, n> arr = { 3,5,8,13,21 };
 	for (int i = 0; i < arr.size(); i++)
@@ -42,7 +42,7 @@ void main()
 #endif
 
 #ifdef VECTOR
-	//vector - это линейный контейнер, который хранит данные в виде динамического массива.
+	//vector - СЌС‚Рѕ Р»РёРЅРµР№РЅС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ, РєРѕС‚РѕСЂС‹Р№ С…СЂР°РЅРёС‚ РґР°РЅРЅС‹Рµ РІ РІРёРґРµ РґРёРЅР°РјРёС‡РµСЃРєРѕРіРѕ РјР°СЃСЃРёРІР°.
 	/*std::vector<int> vec = { 0,1,1,2,3,5,8,13,21, 34 };
 	vector_properties(vec);
 	for (int i = 0; i < vec.size(); i++)
@@ -67,7 +67,7 @@ void main()
 		std::cerr << "Error:" << e.what() << endl;
 	}*/
 
-	std::vector<std::string> s_vec = { "Хорошо", "живет", "на", "свете", "Винни", "Пух" };
+	std::vector<std::string> s_vec = { "РҐРѕСЂРѕС€Рѕ", "Р¶РёРІРµС‚", "РЅР°", "СЃРІРµС‚Рµ", "Р’РёРЅРЅРё", "РџСѓС…" };
 	vector_print(s_vec);
 	vector_reverse_print(s_vec);
 	s_vec.size();
@@ -79,7 +79,7 @@ void main()
 template<typename T>void vector_properties(const std::vector<T>& vec)
 {
 	cout << "Size:    " << vec.size() << endl;
-	cout << "Capacity:" << vec.capacity() << endl;	//Емкость, вместительность
+	cout << "Capacity:" << vec.capacity() << endl;	//Р•РјРєРѕСЃС‚СЊ, РІРјРµСЃС‚РёС‚РµР»СЊРЅРѕСЃС‚СЊ
 	cout << "Max size:" << vec.max_size() << endl;
 }
 template<typename T>void vector_print(const std::vector<T>& vec)
